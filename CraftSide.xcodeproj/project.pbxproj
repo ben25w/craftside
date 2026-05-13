@@ -1,0 +1,485 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		01651A428702BC0E4B12436D /* CraftSideApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABA9E4928EAD127B5C991C74 /* CraftSideApp.swift */; };
+		0B9D62F0EFB33B0C6A352586 /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A22FBEAB79CAC1371D0BE8 /* KeychainStore.swift */; };
+		13B10782A9569B8786D0B7B2 /* CraftSidePanelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94FBB83E37D555E32059FAA2 /* CraftSidePanelController.swift */; };
+		18DE9D7D1024B0C5C99DC85D /* SettingsPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDDFAC7593BBD9D31009046 /* SettingsPane.swift */; };
+		395D7E298A02593E4F5B99CA /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EFAF5A8BF22FE0C579329B1 /* ButtonStyles.swift */; };
+		4467CD74CFE216D38DA42867 /* AppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F95CE2D0BD0B093C6A828A3 /* AppError.swift */; };
+		448347A15222F24B93B7DCCC /* CraftBlockTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9750287F5548009D9702484 /* CraftBlockTests.swift */; };
+		4B472BE0C5E059E2D4DBF2F4 /* JSONValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D1324D997DBA6752ABF4A7 /* JSONValue.swift */; };
+		58191FADDB73BF5BBAA02601 /* AppPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = B730982F6E28D568CFBD7CC0 /* AppPreferences.swift */; };
+		70010C396707A3926802DE67 /* DateRailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FDD5DD7A151F5F721A78F66 /* DateRailView.swift */; };
+		8A87020D41BF75FB9B1EBD2F /* CraftDailyNotesClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1232808DBDFF130BD36B1E /* CraftDailyNotesClient.swift */; };
+		8B0913BEC06D270B45E0BB57 /* CraftBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9052DE2E3725086A571FAE2B /* CraftBlock.swift */; };
+		8CE5F1B690F4E15AADA4BDE1 /* DebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C50B97EE44FDB46D44B9929 /* DebugView.swift */; };
+		CFEF5E1E8EE01A7F40DCD482 /* CraftBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9052DE2E3725086A571FAE2B /* CraftBlock.swift */; };
+		D81589976E0888872DCBF299 /* DailyNoteDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEFE5CF3338F304A54689EB5 /* DailyNoteDetailView.swift */; };
+		E0E54E5869A5874BA785F492 /* JSONValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D1324D997DBA6752ABF4A7 /* JSONValue.swift */; };
+		F6081A20B5A844C7A84255BE /* CraftSideStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7058F34F041A45502AE0F1F /* CraftSideStore.swift */; };
+		F9F0D83F1548141BDF8F637C /* SidePanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACE0CABD635120974B360B6 /* SidePanelView.swift */; };
+		FAF1A19EAA982DB04B4F995D /* ComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2119C0CC1A5FBE3DB35B96B /* ComposerView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0F95CE2D0BD0B093C6A828A3 /* AppError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppError.swift; sourceTree = "<group>"; };
+		1EFAF5A8BF22FE0C579329B1 /* ButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyles.swift; sourceTree = "<group>"; };
+		2CB73605775644FC5242FB10 /* CraftSideTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CraftSideTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		35A22FBEAB79CAC1371D0BE8 /* KeychainStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStore.swift; sourceTree = "<group>"; };
+		5C50B97EE44FDB46D44B9929 /* DebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugView.swift; sourceTree = "<group>"; };
+		6FDD5DD7A151F5F721A78F66 /* DateRailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateRailView.swift; sourceTree = "<group>"; };
+		73D1324D997DBA6752ABF4A7 /* JSONValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONValue.swift; sourceTree = "<group>"; };
+		9052DE2E3725086A571FAE2B /* CraftBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CraftBlock.swift; sourceTree = "<group>"; };
+		94FBB83E37D555E32059FAA2 /* CraftSidePanelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CraftSidePanelController.swift; sourceTree = "<group>"; };
+		A1F1E53E8926299C6519B5B1 /* CraftSide.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CraftSide.entitlements; sourceTree = "<group>"; };
+		ABA9E4928EAD127B5C991C74 /* CraftSideApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CraftSideApp.swift; sourceTree = "<group>"; };
+		AD60E1F84DD9F1B8F47A32CB /* CraftSide.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CraftSide.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B730982F6E28D568CFBD7CC0 /* AppPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPreferences.swift; sourceTree = "<group>"; };
+		B9750287F5548009D9702484 /* CraftBlockTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CraftBlockTests.swift; sourceTree = "<group>"; };
+		CACE0CABD635120974B360B6 /* SidePanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidePanelView.swift; sourceTree = "<group>"; };
+		CD1232808DBDFF130BD36B1E /* CraftDailyNotesClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CraftDailyNotesClient.swift; sourceTree = "<group>"; };
+		CEFE5CF3338F304A54689EB5 /* DailyNoteDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyNoteDetailView.swift; sourceTree = "<group>"; };
+		E2119C0CC1A5FBE3DB35B96B /* ComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerView.swift; sourceTree = "<group>"; };
+		F7058F34F041A45502AE0F1F /* CraftSideStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CraftSideStore.swift; sourceTree = "<group>"; };
+		FDDDFAC7593BBD9D31009046 /* SettingsPane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPane.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		03EBA296CB07986FFFAA583C /* CraftSideTests */ = {
+			isa = PBXGroup;
+			children = (
+				B9750287F5548009D9702484 /* CraftBlockTests.swift */,
+			);
+			path = CraftSideTests;
+			sourceTree = "<group>";
+		};
+		0E7FDB0FCE787387FB2BB919 = {
+			isa = PBXGroup;
+			children = (
+				198EB71A234C3F044326D619 /* CraftSide */,
+				03EBA296CB07986FFFAA583C /* CraftSideTests */,
+				11E7A1454BC1C5F5F0DAE356 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		11E7A1454BC1C5F5F0DAE356 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AD60E1F84DD9F1B8F47A32CB /* CraftSide.app */,
+				2CB73605775644FC5242FB10 /* CraftSideTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		198EB71A234C3F044326D619 /* CraftSide */ = {
+			isa = PBXGroup;
+			children = (
+				A1F1E53E8926299C6519B5B1 /* CraftSide.entitlements */,
+				5C931E992952E0168978025B /* App */,
+				613B257A3EB4CE2FE3F11D60 /* Models */,
+				D91EC7D071E702002C09FC60 /* Services */,
+				AD9C686454A0A150BABB8E82 /* Stores */,
+				82127F7822FCEE91A2582AE9 /* Support */,
+				9EAEDB75E1CE12CE3BCFA47A /* Views */,
+			);
+			path = CraftSide;
+			sourceTree = "<group>";
+		};
+		5C931E992952E0168978025B /* App */ = {
+			isa = PBXGroup;
+			children = (
+				ABA9E4928EAD127B5C991C74 /* CraftSideApp.swift */,
+				94FBB83E37D555E32059FAA2 /* CraftSidePanelController.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		613B257A3EB4CE2FE3F11D60 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B730982F6E28D568CFBD7CC0 /* AppPreferences.swift */,
+				9052DE2E3725086A571FAE2B /* CraftBlock.swift */,
+				73D1324D997DBA6752ABF4A7 /* JSONValue.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		82127F7822FCEE91A2582AE9 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				0F95CE2D0BD0B093C6A828A3 /* AppError.swift */,
+				1EFAF5A8BF22FE0C579329B1 /* ButtonStyles.swift */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
+		9EAEDB75E1CE12CE3BCFA47A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E2119C0CC1A5FBE3DB35B96B /* ComposerView.swift */,
+				CEFE5CF3338F304A54689EB5 /* DailyNoteDetailView.swift */,
+				6FDD5DD7A151F5F721A78F66 /* DateRailView.swift */,
+				5C50B97EE44FDB46D44B9929 /* DebugView.swift */,
+				FDDDFAC7593BBD9D31009046 /* SettingsPane.swift */,
+				CACE0CABD635120974B360B6 /* SidePanelView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		AD9C686454A0A150BABB8E82 /* Stores */ = {
+			isa = PBXGroup;
+			children = (
+				F7058F34F041A45502AE0F1F /* CraftSideStore.swift */,
+			);
+			path = Stores;
+			sourceTree = "<group>";
+		};
+		D91EC7D071E702002C09FC60 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				CD1232808DBDFF130BD36B1E /* CraftDailyNotesClient.swift */,
+				35A22FBEAB79CAC1371D0BE8 /* KeychainStore.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		04AD5CE67E6429CC52B8C775 /* CraftSideTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CF585AE92D8F7839878BE5A5 /* Build configuration list for PBXNativeTarget "CraftSideTests" */;
+			buildPhases = (
+				CB18D93E7A7ED4F939A9CC5B /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CraftSideTests;
+			packageProductDependencies = (
+			);
+			productName = CraftSideTests;
+			productReference = 2CB73605775644FC5242FB10 /* CraftSideTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		C9D355CBF918309D1A4F48CB /* CraftSide */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 033053862EEF556C73E02342 /* Build configuration list for PBXNativeTarget "CraftSide" */;
+			buildPhases = (
+				BB3AE12AD9A3B8ED1060D3AB /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CraftSide;
+			packageProductDependencies = (
+			);
+			productName = CraftSide;
+			productReference = AD60E1F84DD9F1B8F47A32CB /* CraftSide.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		56734E165C21F7F58E27D983 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					C9D355CBF918309D1A4F48CB = {
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 9EEF92FCCAE1B22BD8F7B838 /* Build configuration list for PBXProject "CraftSide" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 0E7FDB0FCE787387FB2BB919;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 11E7A1454BC1C5F5F0DAE356 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C9D355CBF918309D1A4F48CB /* CraftSide */,
+				04AD5CE67E6429CC52B8C775 /* CraftSideTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BB3AE12AD9A3B8ED1060D3AB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4467CD74CFE216D38DA42867 /* AppError.swift in Sources */,
+				58191FADDB73BF5BBAA02601 /* AppPreferences.swift in Sources */,
+				395D7E298A02593E4F5B99CA /* ButtonStyles.swift in Sources */,
+				FAF1A19EAA982DB04B4F995D /* ComposerView.swift in Sources */,
+				CFEF5E1E8EE01A7F40DCD482 /* CraftBlock.swift in Sources */,
+				8A87020D41BF75FB9B1EBD2F /* CraftDailyNotesClient.swift in Sources */,
+				01651A428702BC0E4B12436D /* CraftSideApp.swift in Sources */,
+				13B10782A9569B8786D0B7B2 /* CraftSidePanelController.swift in Sources */,
+				F6081A20B5A844C7A84255BE /* CraftSideStore.swift in Sources */,
+				D81589976E0888872DCBF299 /* DailyNoteDetailView.swift in Sources */,
+				70010C396707A3926802DE67 /* DateRailView.swift in Sources */,
+				8CE5F1B690F4E15AADA4BDE1 /* DebugView.swift in Sources */,
+				E0E54E5869A5874BA785F492 /* JSONValue.swift in Sources */,
+				0B9D62F0EFB33B0C6A352586 /* KeychainStore.swift in Sources */,
+				18DE9D7D1024B0C5C99DC85D /* SettingsPane.swift in Sources */,
+				F9F0D83F1548141BDF8F637C /* SidePanelView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CB18D93E7A7ED4F939A9CC5B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8B0913BEC06D270B45E0BB57 /* CraftBlock.swift in Sources */,
+				448347A15222F24B93B7DCCC /* CraftBlockTests.swift in Sources */,
+				4B472BE0C5E059E2D4DBF2F4 /* JSONValue.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		10F6AB4B2972F596C6685B63 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		186806968ADAF991C1A7558F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ben.CraftSideTests;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		56732B06CC2932BCED289E90 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = CraftSide/CraftSide.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_ASSET_PATHS = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = CraftSide/Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ben.CraftSide;
+				PRODUCT_NAME = CraftSide;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		BD4B83149677628DA0D22AC9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = CraftSide/CraftSide.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_ASSET_PATHS = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = CraftSide/Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ben.CraftSide;
+				PRODUCT_NAME = CraftSide;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		F1BAFDB8DCA8D8BF1D9B3929 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		FC8F09245E8E8381B710C473 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ben.CraftSideTests;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		033053862EEF556C73E02342 /* Build configuration list for PBXNativeTarget "CraftSide" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				56732B06CC2932BCED289E90 /* Debug */,
+				BD4B83149677628DA0D22AC9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		9EEF92FCCAE1B22BD8F7B838 /* Build configuration list for PBXProject "CraftSide" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F1BAFDB8DCA8D8BF1D9B3929 /* Debug */,
+				10F6AB4B2972F596C6685B63 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		CF585AE92D8F7839878BE5A5 /* Build configuration list for PBXNativeTarget "CraftSideTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				186806968ADAF991C1A7558F /* Debug */,
+				FC8F09245E8E8381B710C473 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 56734E165C21F7F58E27D983 /* Project object */;
+}

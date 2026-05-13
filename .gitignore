@@ -11,6 +11,7 @@ dist/
 
 # Xcode local state
 DerivedData/
+build/
 *.xcuserdata/
 *.xcuserstate
 *.moved-aside

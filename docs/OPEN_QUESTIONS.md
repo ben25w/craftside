@@ -1,26 +1,27 @@
-# Open Questions
+# Product Decisions
 
-These are the questions that should be answered before the app is treated as more than a prototype.
+These are the current decisions for CraftSide v1, based on Ben's inline answers on 2026-05-13.
 
-## Product
+## Locked For Version 1
 
-1. Should the first public release support full-space Craft API connections, Daily Notes API connections, or both?
-2. Where should new notes go by default when a full-space connection is available?
-3. Should editing overwrite the first editable text block only, or should CraftSide preserve and update multiple text blocks?
-4. Should outside-click close ask for confirmation when the editor has unsaved changes?
-5. Should the global keyboard shortcut be fixed for v1 or user configurable before release?
-6. Should delete/archive be included in v1, or should v1 avoid destructive actions entirely?
+1. CraftSide is an Xcode macOS app, not a SwiftPM-only prototype.
+2. CraftSide stays a menu-bar app with a floating side panel.
+3. No global keyboard shortcut for v1.
+4. The panel can open from the left or right side, controlled by an in-panel setting.
+5. Clicking away closes the panel.
+6. Settings live inside the side panel.
+7. The app name stays CraftSide.
+8. The repo is public MIT.
+9. Daily Notes are the v1 focus.
+10. Today is pinned at the top, and nearby past/future dates are easy to reach.
+11. The app should preserve and render as much Craft structure as possible.
+12. Unsupported blocks and failed writes must expose debug details instead of pretending the note is empty.
+13. Full Craft document browsing and normal document creation are version 2 work.
 
-## Craft API
+## Still To Prove Against Real Craft Data
 
-1. What exact payload shape should be used for rich Markdown and task blocks in `POST /documents`, `POST /blocks`, and `PUT /blocks`?
-2. Does `GET /documents` reliably return `metadata.lastModifiedAt` for sorting, or does the client need another field?
-3. Are Craft deep links best sourced from API `url` fields, `/connection` URL templates, or a custom URL scheme?
-4. What API rate limits apply to live search and refresh-on-open?
-5. Does a Daily Notes connection support creating a daily note implicitly by inserting a block for `date=today`, or is a separate create operation needed?
-
-## Open Source
-
-1. Is MIT the intended license long term?
-2. Should the public repository include issue templates and a contributing guide now, or wait until the app has real users?
-3. Should the app name stay `CraftSide`, given Craft is a third-party product name?
+1. Exact `PUT /blocks` payload for rich block edits.
+2. Whether every Daily Notes connection accepts text/markdown inserts with `position` for top, bottom, before, and after selected blocks.
+3. How Craft returns attachments, images, backlinks, and complex task metadata in real daily notes.
+4. Whether Daily Notes search/date navigation needs a full calendar picker after the current date rail.
+5. How much rich editing should be native in CraftSide versus opened directly in Craft.
