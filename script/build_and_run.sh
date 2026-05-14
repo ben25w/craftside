@@ -11,6 +11,7 @@ SCHEME="CraftSide"
 CONFIGURATION="Debug"
 APP_BUNDLE="$DERIVED_DATA/Build/Products/$CONFIGURATION/$APP_NAME.app"
 APP_BINARY="$APP_BUNDLE/Contents/MacOS/$APP_NAME"
+INSTALLED_APP="/Applications/$APP_NAME.app"
 
 pkill -x "$APP_NAME" >/dev/null 2>&1 || true
 
@@ -34,9 +35,20 @@ open_app() {
   /usr/bin/open -n "$APP_BUNDLE"
 }
 
+install_app() {
+  rm -rf "$INSTALLED_APP"
+  /usr/bin/ditto "$APP_BUNDLE" "$INSTALLED_APP"
+  xattr -cr "$INSTALLED_APP" >/dev/null 2>&1 || true
+  /usr/bin/codesign --force --deep --sign - --entitlements "$ROOT_DIR/CraftSide/CraftSide.entitlements" "$INSTALLED_APP"
+  /usr/bin/open -n "$INSTALLED_APP"
+}
+
 case "$MODE" in
   run)
     open_app
+    ;;
+  --install|install)
+    install_app
     ;;
   --debug|debug)
     lldb -- "$APP_BINARY"
@@ -55,7 +67,7 @@ case "$MODE" in
     pgrep -x "$APP_NAME" >/dev/null
     ;;
   *)
-    echo "usage: $0 [run|--debug|--logs|--telemetry|--verify]" >&2
+    echo "usage: $0 [run|--install|--debug|--logs|--telemetry|--verify]" >&2
     exit 2
     ;;
 esac

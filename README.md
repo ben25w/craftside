@@ -34,6 +34,12 @@ Build and launch:
 ./script/build_and_run.sh
 ```
 
+Install into `/Applications` and launch:
+
+```bash
+./script/build_and_run.sh --install
+```
+
 Build and verify launch:
 
 ```bash

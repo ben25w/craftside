@@ -23,9 +23,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func configureStatusItem() {
-        let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
+        let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         statusItem = item
         item.button?.image = NSImage(systemSymbolName: "sidebar.right", accessibilityDescription: "CraftSide")
+        item.button?.imagePosition = .imageLeading
+        item.button?.title = " CraftSide"
         item.button?.target = self
         item.button?.action = #selector(togglePanel)
         item.button?.sendAction(on: [.leftMouseUp])
