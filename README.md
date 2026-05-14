@@ -1,24 +1,25 @@
 # CraftSide
 
-CraftSide is a native macOS menu bar app that opens a Craft Daily Notes side panel.
+CraftSide is a native macOS menu bar app for fast Craft tasks.
 
 CraftSide is not affiliated with Craft Docs Limited. It is an independent open-source companion app prototype.
 
 ## Version 1 Scope
 
 - Xcode macOS app, suitable to grow toward App Store distribution.
-- Menu bar icon opens and closes a floating side panel.
+- Menu bar icon opens and closes a Reminders-style popover.
 - No global keyboard shortcut in v1.
-- Left or right side opening, stored as a user setting.
 - Outside click closes the panel.
-- Daily Notes only for v1, with today pinned at the top and nearby dates available.
-- Read daily-note blocks from the Craft Daily Notes API.
-- Append or insert Markdown at the top, bottom, before a selected block, or after a selected block.
-- Render common rich blocks locally: headings, paragraphs, lists, tasks, links, code, quotes, files, and nested children.
+- Craft Tasks are the main v1 focus.
+- Fast task entry with Return-to-add.
+- Schedule tasks for Inbox, Today, Tomorrow, or a custom date.
+- Show Today, Overdue, Upcoming, Inbox, and All task views.
+- Complete Craft tasks from the popover.
+- Move tasks between Inbox, Today, and Tomorrow.
 - Debug mode shows raw Craft JSON and write responses whenever the app cannot fully render or update something.
 - Craft MCP URL, API URL, and API key are stored in Keychain.
 
-Full Craft document browsing and normal document creation are planned for a later version.
+Daily-note block browsing and normal Craft document creation are planned for later versions.
 
 ## Running
 
@@ -56,13 +57,14 @@ The Codex Run action is wired to `./script/build_and_run.sh`.
 
 ## Craft Connection
 
-CraftSide v1 prefers the Craft Daily Notes MCP connection because it exposes daily note blocks and task actions in one place:
+CraftSide v1 prefers the Craft Daily Notes MCP connection because it exposes task actions cleanly:
 
-- `craft_read`: `blocks get --date YYYY-MM-DD --format json`
 - `craft_read`: `tasks list --scope active`
-- `craft_write`: `blocks add --date YYYY-MM-DD --markdown ...`
-- `craft_write`: `blocks update --id ... --markdown ...`
-- `craft_write`: `tasks update --id ... --state done`
+- `craft_read`: `tasks list --scope upcoming`
+- `craft_read`: `tasks list --scope inbox`
+- `craft_write`: `tasks add --markdown ... --schedule ...`
+- `craft_write`: `tasks update --task ... --state done`
+- `craft_write`: `tasks update --task ... --schedule ...`
 
 The older Craft Daily Notes API remains as a fallback:
 

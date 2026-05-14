@@ -12,6 +12,7 @@
 		0B9D62F0EFB33B0C6A352586 /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A22FBEAB79CAC1371D0BE8 /* KeychainStore.swift */; };
 		13B10782A9569B8786D0B7B2 /* CraftSidePanelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94FBB83E37D555E32059FAA2 /* CraftSidePanelController.swift */; };
 		18DE9D7D1024B0C5C99DC85D /* SettingsPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDDFAC7593BBD9D31009046 /* SettingsPane.swift */; };
+		202C0785A3BCE7F26DBF4D46 /* CraftTasksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4658FCE70FB2F82CDBD1910E /* CraftTasksView.swift */; };
 		395D7E298A02593E4F5B99CA /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EFAF5A8BF22FE0C579329B1 /* ButtonStyles.swift */; };
 		4467CD74CFE216D38DA42867 /* AppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F95CE2D0BD0B093C6A828A3 /* AppError.swift */; };
 		448347A15222F24B93B7DCCC /* CraftBlockTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9750287F5548009D9702484 /* CraftBlockTests.swift */; };
@@ -22,7 +23,6 @@
 		8A87020D41BF75FB9B1EBD2F /* CraftDailyNotesClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1232808DBDFF130BD36B1E /* CraftDailyNotesClient.swift */; };
 		8B0913BEC06D270B45E0BB57 /* CraftBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9052DE2E3725086A571FAE2B /* CraftBlock.swift */; };
 		8CE5F1B690F4E15AADA4BDE1 /* DebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C50B97EE44FDB46D44B9929 /* DebugView.swift */; };
-		9CD578029D7BEA2641A3157F /* CraftEdgeTriggerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5291AA72F084848B2760EEDD /* CraftEdgeTriggerController.swift */; };
 		CFEF5E1E8EE01A7F40DCD482 /* CraftBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9052DE2E3725086A571FAE2B /* CraftBlock.swift */; };
 		D81589976E0888872DCBF299 /* DailyNoteDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEFE5CF3338F304A54689EB5 /* DailyNoteDetailView.swift */; };
 		E0E54E5869A5874BA785F492 /* JSONValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D1324D997DBA6752ABF4A7 /* JSONValue.swift */; };
@@ -37,7 +37,7 @@
 		261F9EE1268288BC05596108 /* CraftTaskSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CraftTaskSummary.swift; sourceTree = "<group>"; };
 		2CB73605775644FC5242FB10 /* CraftSideTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CraftSideTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		35A22FBEAB79CAC1371D0BE8 /* KeychainStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStore.swift; sourceTree = "<group>"; };
-		5291AA72F084848B2760EEDD /* CraftEdgeTriggerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CraftEdgeTriggerController.swift; sourceTree = "<group>"; };
+		4658FCE70FB2F82CDBD1910E /* CraftTasksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CraftTasksView.swift; sourceTree = "<group>"; };
 		5C50B97EE44FDB46D44B9929 /* DebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugView.swift; sourceTree = "<group>"; };
 		6FDD5DD7A151F5F721A78F66 /* DateRailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateRailView.swift; sourceTree = "<group>"; };
 		73D1324D997DBA6752ABF4A7 /* JSONValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONValue.swift; sourceTree = "<group>"; };
@@ -100,7 +100,6 @@
 		5C931E992952E0168978025B /* App */ = {
 			isa = PBXGroup;
 			children = (
-				5291AA72F084848B2760EEDD /* CraftEdgeTriggerController.swift */,
 				ABA9E4928EAD127B5C991C74 /* CraftSideApp.swift */,
 				94FBB83E37D555E32059FAA2 /* CraftSidePanelController.swift */,
 			);
@@ -131,6 +130,7 @@
 			isa = PBXGroup;
 			children = (
 				E2119C0CC1A5FBE3DB35B96B /* ComposerView.swift */,
+				4658FCE70FB2F82CDBD1910E /* CraftTasksView.swift */,
 				CEFE5CF3338F304A54689EB5 /* DailyNoteDetailView.swift */,
 				6FDD5DD7A151F5F721A78F66 /* DateRailView.swift */,
 				5C50B97EE44FDB46D44B9929 /* DebugView.swift */,
@@ -239,11 +239,11 @@
 				FAF1A19EAA982DB04B4F995D /* ComposerView.swift in Sources */,
 				CFEF5E1E8EE01A7F40DCD482 /* CraftBlock.swift in Sources */,
 				8A87020D41BF75FB9B1EBD2F /* CraftDailyNotesClient.swift in Sources */,
-				9CD578029D7BEA2641A3157F /* CraftEdgeTriggerController.swift in Sources */,
 				01651A428702BC0E4B12436D /* CraftSideApp.swift in Sources */,
 				13B10782A9569B8786D0B7B2 /* CraftSidePanelController.swift in Sources */,
 				F6081A20B5A844C7A84255BE /* CraftSideStore.swift in Sources */,
 				07DB1800BF456CA4018712B2 /* CraftTaskSummary.swift in Sources */,
+				202C0785A3BCE7F26DBF4D46 /* CraftTasksView.swift in Sources */,
 				D81589976E0888872DCBF299 /* DailyNoteDetailView.swift in Sources */,
 				70010C396707A3926802DE67 /* DateRailView.swift in Sources */,
 				8CE5F1B690F4E15AADA4BDE1 /* DebugView.swift in Sources */,

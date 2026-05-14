@@ -19,6 +19,13 @@ final class CraftSideStore: ObservableObject {
     @Published var lastWriteDebug: JSONValue?
     @Published var activeTasks: JSONValue?
     @Published var activeTaskSummaries: [CraftTaskSummary] = []
+    @Published var upcomingTasks: JSONValue?
+    @Published var upcomingTaskSummaries: [CraftTaskSummary] = []
+    @Published var inboxTasks: JSONValue?
+    @Published var inboxTaskSummaries: [CraftTaskSummary] = []
+    @Published var newTaskText = ""
+    @Published var newTaskSchedule: TaskScheduleChoice = .today
+    @Published var newTaskCustomDate = Date()
 
     private let client: CraftDailyNotesClient
     private let keychain: KeychainStore
@@ -75,6 +82,10 @@ final class CraftSideStore: ObservableObject {
         lastWriteDebug = nil
         activeTasks = nil
         activeTaskSummaries = []
+        upcomingTasks = nil
+        upcomingTaskSummaries = []
+        inboxTasks = nil
+        inboxTaskSummaries = []
     }
 
     func select(date: Date) async {
@@ -121,6 +132,14 @@ final class CraftSideStore: ObservableObject {
             guard let date = Calendar.current.date(byAdding: .day, value: offset, to: selectedDate) else { continue }
             await fetchIfNeeded(date: date)
         }
+    }
+
+    func refreshTasks() async {
+        guard hasConnection else { return }
+        isLoading = true
+        lastError = nil
+        await loadTasks()
+        isLoading = false
     }
 
     func expandEarlier() {
@@ -192,6 +211,44 @@ final class CraftSideStore: ObservableObject {
         isSaving = false
     }
 
+    func addTaskFromInput() async {
+        let text = newTaskText.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !text.isEmpty else { return }
+        guard connection.usesMCP else {
+            lastError = "Adding Craft tasks needs the Craft MCP connection."
+            return
+        }
+
+        isSaving = true
+        lastError = nil
+        do {
+            let schedule = resolvedNewTaskSchedule
+            lastWriteDebug = try await client.addTask(markdown: text, schedule: schedule, connection: connection)
+            newTaskText = ""
+            await loadTasks()
+        } catch {
+            lastError = error.localizedDescription
+        }
+        isSaving = false
+    }
+
+    func rescheduleTask(id: String, schedule: TaskScheduleChoice) async {
+        guard connection.usesMCP else {
+            lastError = "Changing Craft task dates needs the Craft MCP connection."
+            return
+        }
+
+        isSaving = true
+        lastError = nil
+        do {
+            lastWriteDebug = try await client.updateTaskSchedule(id: id, schedule: schedule, connection: connection)
+            await loadTasks()
+        } catch {
+            lastError = error.localizedDescription
+        }
+        isSaving = false
+    }
+
     private func fetchIfNeeded(date: Date) async {
         guard let note = notes.first(where: { Calendar.current.isDate($0.date, inSameDayAs: date) }),
               note.loadState == .idle else { return }
@@ -218,6 +275,31 @@ final class CraftSideStore: ObservableObject {
             activeTasks = nil
             activeTaskSummaries = []
         }
+
+        do {
+            let response = try await client.fetchTasks(scope: "upcoming", connection: connection)
+            upcomingTasks = response
+            upcomingTaskSummaries = CraftTaskSummary.parse(from: response)
+        } catch {
+            upcomingTasks = nil
+            upcomingTaskSummaries = []
+        }
+
+        do {
+            let response = try await client.fetchTasks(scope: "inbox", connection: connection)
+            inboxTasks = response
+            inboxTaskSummaries = CraftTaskSummary.parse(from: response)
+        } catch {
+            inboxTasks = nil
+            inboxTaskSummaries = []
+        }
+    }
+
+    private var resolvedNewTaskSchedule: TaskScheduleChoice {
+        if case .custom = newTaskSchedule {
+            return .custom(newTaskCustomDate)
+        }
+        return newTaskSchedule
     }
 
     private func updateNote(date: Date, update: (inout DailyNote) -> Void) {

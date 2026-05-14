@@ -111,11 +111,7 @@ final class CraftDailyNotesClient {
 
     func updateBlockMarkdown(id: String, markdown: String, connection: CraftConnection) async throws -> JSONValue {
         if connection.usesMCP {
-            return try await callMCPTool(
-                name: "craft_write",
-                command: "blocks update --id \(id) --markdown \(Self.quotedMCPArgument(markdown))",
-                connection: connection
-            )
+            return try await callMCPTool(name: "craft_write", command: "blocks update --id \(id) --markdown \(Self.quotedMCPArgument(markdown))", connection: connection)
         }
 
         let payload: [String: Any] = [
@@ -154,9 +150,45 @@ final class CraftDailyNotesClient {
 
     func completeTask(id: String, connection: CraftConnection) async throws -> JSONValue {
         if connection.usesMCP {
-            return try await callMCPTool(name: "craft_write", command: "tasks update --id \(id) --state done", connection: connection)
+            return try await callMCPTool(name: "craft_write", command: "tasks update --task \(id) --state done", connection: connection)
         }
         throw AppError.invalidResponse
+    }
+
+    func addTask(markdown: String, schedule: TaskScheduleChoice, connection: CraftConnection) async throws -> JSONValue {
+        guard connection.usesMCP else { throw AppError.invalidResponse }
+
+        var command = "tasks add --markdown \(Self.quotedMCPArgument(markdown))"
+        switch schedule {
+        case .inbox:
+            command += " --location inbox"
+        case .today:
+            command += " --location dailyNote --date today --schedule today"
+        case .tomorrow:
+            command += " --location dailyNote --date tomorrow --schedule tomorrow"
+        case .custom(let date):
+            let text = DateFormatter.craftDate.string(from: date)
+            command += " --location dailyNote --date \(text) --schedule \(text)"
+        }
+        return try await callMCPTool(name: "craft_write", command: command, connection: connection)
+    }
+
+    func updateTaskSchedule(id: String, schedule: TaskScheduleChoice, connection: CraftConnection) async throws -> JSONValue {
+        guard connection.usesMCP else { throw AppError.invalidResponse }
+
+        var command = "tasks update --task \(id)"
+        switch schedule {
+        case .inbox:
+            command += " --location inbox"
+        case .today:
+            command += " --location dailyNote --date today --schedule today"
+        case .tomorrow:
+            command += " --location dailyNote --date tomorrow --schedule tomorrow"
+        case .custom(let date):
+            let text = DateFormatter.craftDate.string(from: date)
+            command += " --location dailyNote --date \(text) --schedule \(text)"
+        }
+        return try await callMCPTool(name: "craft_write", command: command, connection: connection)
     }
 
     private func request(

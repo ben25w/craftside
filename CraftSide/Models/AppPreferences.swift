@@ -55,3 +55,10 @@ enum InsertPlacement: String, CaseIterable, Identifiable {
         }
     }
 }
+
+enum TaskScheduleChoice: Equatable {
+    case inbox
+    case today
+    case tomorrow
+    case custom(Date)
+}

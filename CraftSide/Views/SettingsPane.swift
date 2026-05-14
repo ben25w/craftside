@@ -3,7 +3,6 @@ import AppKit
 
 struct SettingsPane: View {
     @EnvironmentObject private var store: CraftSideStore
-    @AppStorage("SidebarSide") private var sideRaw = SidebarSide.right.rawValue
     @AppStorage("AppearanceMode") private var appearanceRaw = AppearanceMode.system.rawValue
     @State private var endpoint = ""
     @State private var apiKey = ""
@@ -58,12 +57,6 @@ struct SettingsPane: View {
                     VStack(alignment: .leading, spacing: 12) {
                         Text("Panel")
                             .font(.headline)
-                        Picker("Side", selection: sideBinding) {
-                            ForEach(SidebarSide.allCases) { side in
-                                Text(side.label).tag(side)
-                            }
-                        }
-                        .pickerStyle(.segmented)
 
                         Picker("Appearance", selection: appearanceBinding) {
                             ForEach(AppearanceMode.allCases) { mode in
@@ -72,7 +65,7 @@ struct SettingsPane: View {
                         }
                         .pickerStyle(.segmented)
 
-                        Text("The menu bar icon opens and closes the side panel. Clicking away closes it.")
+                        Text("The menu bar icon opens Craft tasks. Clicking away closes it.")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
@@ -112,17 +105,6 @@ struct SettingsPane: View {
             apiKey = store.connection.apiKey
             mcpEndpoint = store.connection.mcpEndpoint
         }
-    }
-
-    private var sideBinding: Binding<SidebarSide> {
-        Binding(
-            get: { SidebarSide(rawValue: sideRaw) ?? .right },
-            set: {
-                sideRaw = $0.rawValue
-                CraftSidePanelController.shared.reposition(side: $0)
-                CraftEdgeTriggerController.shared.update(side: $0)
-            }
-        )
     }
 
     private var appearanceBinding: Binding<AppearanceMode> {

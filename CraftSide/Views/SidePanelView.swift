@@ -16,7 +16,7 @@ struct SidePanelView: View {
             if !store.hasConnection || store.isShowingSettings {
                 SettingsPane()
             } else {
-                MainDailyNotesView()
+                CraftTasksView()
             }
         }
         .preferredColorScheme(appearance.colorScheme)
@@ -27,7 +27,7 @@ struct SidePanelView: View {
                 .stroke(CraftPalette.border, lineWidth: 1)
         )
         .task {
-            await store.loadVisibleDates()
+            await store.refreshTasks()
         }
     }
 }
@@ -45,7 +45,7 @@ private struct PanelHeader: View {
             VStack(alignment: .leading, spacing: 1) {
                 Text("CraftSide")
                     .font(.system(size: 14, weight: .semibold))
-                Text(store.selectedNote?.subtitle ?? "Daily Notes")
+                Text("Craft Tasks")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -76,18 +76,6 @@ private struct PanelHeader: View {
         .padding(.vertical, 14)
         .foregroundStyle(.white)
         .background(CraftPalette.headerBackground)
-    }
-}
-
-private struct MainDailyNotesView: View {
-    var body: some View {
-        VStack(spacing: 0) {
-            DateRailView()
-            Divider()
-            DailyNoteDetailView()
-            Divider()
-            ComposerView()
-        }
     }
 }
 

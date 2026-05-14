@@ -20,9 +20,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.accessory)
         configureStatusItem()
-        CraftEdgeTriggerController.shared.configure(side: currentSide) { [weak self] in
-            self?.togglePanel()
-        }
     }
 
     private func configureStatusItem() {
@@ -37,14 +34,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     @objc private func togglePanel() {
-        let side = currentSide
-        CraftSidePanelController.shared.toggle(side: side, preferredScreen: statusItem?.button?.window?.screen) {
+        CraftSidePanelController.shared.toggle(relativeTo: statusItem?.button) {
             SidePanelView()
                 .environmentObject(store)
         }
-    }
-
-    private var currentSide: SidebarSide {
-        SidebarSide(rawValue: UserDefaults.standard.string(forKey: "SidebarSide") ?? "") ?? .right
     }
 }

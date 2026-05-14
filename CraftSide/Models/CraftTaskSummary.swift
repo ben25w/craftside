@@ -11,6 +11,11 @@ struct CraftTaskSummary: Identifiable, Equatable {
         return Calendar.current.isDateInToday(schedule)
     }
 
+    var isTomorrow: Bool {
+        guard let schedule else { return false }
+        return Calendar.current.isDateInTomorrow(schedule)
+    }
+
     var isOverdue: Bool {
         guard let schedule else { return false }
         return Calendar.current.startOfDay(for: schedule) < Calendar.current.startOfDay(for: Date())
@@ -18,7 +23,20 @@ struct CraftTaskSummary: Identifiable, Equatable {
 
     var scheduleLabel: String {
         guard let schedule else { return "" }
+        if Calendar.current.isDateInToday(schedule) { return "Today" }
+        if Calendar.current.isDateInTomorrow(schedule) { return "Tomorrow" }
+        if Calendar.current.isDateInYesterday(schedule) { return "Yesterday" }
         return DateFormatter.shortTaskDate.string(from: schedule)
+    }
+
+    var locationLabel: String {
+        if location.contains("daily note") {
+            return "Daily Note"
+        }
+        if location.isEmpty {
+            return "Craft"
+        }
+        return location.capitalized
     }
 
     static func parse(from json: JSONValue) -> [CraftTaskSummary] {
