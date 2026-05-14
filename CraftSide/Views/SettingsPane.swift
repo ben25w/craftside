@@ -112,7 +112,10 @@ struct SettingsPane: View {
     private var sideBinding: Binding<SidebarSide> {
         Binding(
             get: { SidebarSide(rawValue: sideRaw) ?? .right },
-            set: { sideRaw = $0.rawValue }
+            set: {
+                sideRaw = $0.rawValue
+                CraftSidePanelController.shared.reposition(side: $0)
+            }
         )
     }
 

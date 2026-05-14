@@ -35,7 +35,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     @objc private func togglePanel() {
         let side = SidebarSide(rawValue: UserDefaults.standard.string(forKey: "SidebarSide") ?? "") ?? .right
-        CraftSidePanelController.shared.toggle(side: side) {
+        CraftSidePanelController.shared.toggle(side: side, preferredScreen: statusItem?.button?.window?.screen) {
             SidePanelView()
                 .environmentObject(store)
         }
