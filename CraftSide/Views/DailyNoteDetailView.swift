@@ -49,7 +49,11 @@ struct DailyNoteDetailView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         } else if let root = store.selectedRoot {
             ScrollView {
-                LazyVStack(alignment: .leading, spacing: 6) {
+                LazyVStack(alignment: .leading, spacing: 12) {
+                    if store.connection.usesMCP, !store.activeTaskSummaries.isEmpty {
+                        TaskBoardView(tasks: store.activeTaskSummaries)
+                    }
+
                     if root.children.isEmpty {
                         BlockRow(block: root)
                     } else {
@@ -82,15 +86,37 @@ private struct BlockTreeView: View {
     let block: CraftBlock
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            BlockRow(block: block)
-            if !block.children.isEmpty {
-                VStack(alignment: .leading, spacing: 4) {
-                    ForEach(block.children) { child in
-                        BlockTreeView(block: child)
+        Group {
+            if block.shouldRenderAsCard {
+                VStack(alignment: .leading, spacing: 10) {
+                    BlockRow(block: block)
+                    if !block.children.isEmpty {
+                        VStack(alignment: .leading, spacing: 5) {
+                            ForEach(block.children) { child in
+                                BlockTreeView(block: child)
+                            }
+                        }
+                        .padding(.leading, 8)
                     }
                 }
-                .padding(.leading, 18)
+                .padding(12)
+                .background(CraftPalette.card, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        .stroke(CraftPalette.border, lineWidth: 1)
+                )
+            } else {
+                VStack(alignment: .leading, spacing: 4) {
+                    BlockRow(block: block)
+                    if !block.children.isEmpty {
+                        VStack(alignment: .leading, spacing: 4) {
+                            ForEach(block.children) { child in
+                                BlockTreeView(block: child)
+                            }
+                        }
+                        .padding(.leading, 18)
+                    }
+                }
             }
         }
     }
@@ -180,7 +206,7 @@ private struct BlockRow: View {
     }
 
     private var rowBackground: Color {
-        isSelected ? CraftPalette.purpleSoft : Color.clear
+        isSelected ? CraftPalette.purpleSoft : block.type == "table" ? CraftPalette.taskPanel : Color.clear
     }
 
     @ViewBuilder
@@ -188,7 +214,7 @@ private struct BlockRow: View {
         switch block.listStyle {
         case "task":
             Image(systemName: block.taskState == "done" ? "checkmark.square.fill" : "square")
-                .foregroundStyle(block.taskState == "done" ? .green : .secondary)
+                .foregroundStyle(block.taskState == "done" ? Color.primary : .secondary)
         case "bullet":
             Text("•")
                 .foregroundStyle(.secondary)
@@ -197,9 +223,15 @@ private struct BlockRow: View {
                 .font(.caption)
                 .foregroundStyle(.secondary)
         default:
-            Image(systemName: iconName)
-                .foregroundStyle(.secondary)
-                .font(.caption)
+            if block.textStyle == "h2" || block.textStyle == "h3" || block.textStyle == "page" {
+                Image(systemName: "chevron.down")
+                    .foregroundStyle(.secondary)
+                    .font(.caption)
+            } else {
+                Image(systemName: iconName)
+                    .foregroundStyle(.secondary)
+                    .font(.caption)
+            }
         }
     }
 
@@ -249,6 +281,7 @@ private struct MarkdownText: View {
             .font(font)
             .textSelection(.enabled)
             .lineSpacing(2)
+            .strikethrough(text.contains("~~"))
     }
 
     private var attributed: AttributedString {
@@ -257,12 +290,115 @@ private struct MarkdownText: View {
 
     private var font: Font {
         switch textStyle {
-        case "h1": .title.bold()
-        case "h2": .title2.bold()
-        case "h3": .title3.bold()
+        case "h1": .system(size: 28, weight: .bold, design: .rounded)
+        case "h2": .system(size: 18, weight: .bold, design: .rounded)
+        case "h3": .system(size: 16, weight: .semibold, design: .rounded)
         case "h4": .headline
+        case "page": .system(size: 18, weight: .bold, design: .rounded)
         case "caption": .caption
-        default: .body
+        default: .system(size: 14.5, weight: .regular, design: .default)
+        }
+    }
+}
+
+private struct TaskBoardView: View {
+    @EnvironmentObject private var store: CraftSideStore
+    let tasks: [CraftTaskSummary]
+
+    private var overdue: [CraftTaskSummary] {
+        tasks.filter(\.isOverdue)
+    }
+
+    private var today: [CraftTaskSummary] {
+        tasks.filter(\.isToday)
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Tasks")
+                .font(.system(size: 17, weight: .bold, design: .rounded))
+
+            if !overdue.isEmpty {
+                TaskGroupView(title: "Scheduled for Previous Days", tasks: overdue)
+            }
+
+            if !today.isEmpty {
+                TaskGroupView(title: "This Day", tasks: today)
+            }
+        }
+        .padding(12)
+        .background(CraftPalette.taskPanel, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .stroke(CraftPalette.border, lineWidth: 1)
+        )
+    }
+}
+
+private struct TaskGroupView: View {
+    let title: String
+    let tasks: [CraftTaskSummary]
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 8) {
+                Image(systemName: "chevron.down")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                Text(title)
+                    .font(.system(size: 14, weight: .bold, design: .rounded))
+            }
+
+            ForEach(tasks.prefix(8)) { task in
+                TaskSummaryRow(task: task)
+            }
+
+            if tasks.count > 8 {
+                Label("\(tasks.count - 8) more tasks", systemImage: "ellipsis.circle.fill")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .padding(.leading, 20)
+            }
+        }
+    }
+}
+
+private struct TaskSummaryRow: View {
+    @EnvironmentObject private var store: CraftSideStore
+    let task: CraftTaskSummary
+
+    var body: some View {
+        HStack(alignment: .firstTextBaseline, spacing: 8) {
+            Button {
+                Task { await store.completeTask(id: task.id) }
+            } label: {
+                Image(systemName: "square")
+                    .foregroundStyle(.secondary)
+            }
+            .buttonStyle(.plain)
+            .disabled(store.isSaving)
+
+            if !task.scheduleLabel.isEmpty {
+                Text(task.scheduleLabel)
+                    .font(.caption.weight(.medium))
+                    .foregroundStyle(.secondary)
+                    .padding(.horizontal, 7)
+                    .padding(.vertical, 3)
+                    .background(Color.primary.opacity(0.055), in: RoundedRectangle(cornerRadius: 5, style: .continuous))
+            }
+
+            Text(task.title)
+                .font(.system(size: 13.5))
+                .lineLimit(2)
+
+            if !task.location.isEmpty {
+                Text(task.location.contains("daily note") ? "Daily Note" : task.location.capitalized)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .padding(.horizontal, 7)
+                    .padding(.vertical, 3)
+                    .background(Color.primary.opacity(0.045), in: RoundedRectangle(cornerRadius: 5, style: .continuous))
+            }
         }
     }
 }

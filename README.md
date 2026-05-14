@@ -16,7 +16,7 @@ CraftSide is not affiliated with Craft Docs Limited. It is an independent open-s
 - Append or insert Markdown at the top, bottom, before a selected block, or after a selected block.
 - Render common rich blocks locally: headings, paragraphs, lists, tasks, links, code, quotes, files, and nested children.
 - Debug mode shows raw Craft JSON and write responses whenever the app cannot fully render or update something.
-- API URL and API key are stored in Keychain.
+- Craft MCP URL, API URL, and API key are stored in Keychain.
 
 Full Craft document browsing and normal document creation are planned for a later version.
 
@@ -54,16 +54,24 @@ xcodebuild -project CraftSide.xcodeproj -scheme CraftSide -configuration Debug -
 
 The Codex Run action is wired to `./script/build_and_run.sh`.
 
-## API Notes
+## Craft Connection
 
-CraftSide v1 uses the Craft Daily Notes API:
+CraftSide v1 prefers the Craft Daily Notes MCP connection because it exposes daily note blocks and task actions in one place:
+
+- `craft_read`: `blocks get --date YYYY-MM-DD --format json`
+- `craft_read`: `tasks list --scope active`
+- `craft_write`: `blocks add --date YYYY-MM-DD --markdown ...`
+- `craft_write`: `blocks update --id ... --markdown ...`
+- `craft_write`: `tasks update --id ... --state done`
+
+The older Craft Daily Notes API remains as a fallback:
 
 - `GET /blocks?date=YYYY-MM-DD&maxDepth=-1&fetchMetadata=true`
 - `POST /blocks` with `Content-Type: text/markdown`
 - `PUT /blocks` for selected block editing
 - `GET /tasks?scope=active` for debug coverage
 
-The write path uses the Daily Notes `position` query parameter instead of the older JSON body shape that caused Craft validation errors.
+Never commit MCP URLs, API URLs, API keys, screenshots containing tokens, or copied request output with private note content.
 
 ## License
 

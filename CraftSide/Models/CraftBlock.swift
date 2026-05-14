@@ -42,7 +42,13 @@ struct CraftBlock: Identifiable, Equatable {
             title = ""
         }
 
-        children = json["content"]?.arrayValue?.map(CraftBlock.init(json:)) ?? []
+        if let content = json["content"]?.arrayValue {
+            children = content.map(CraftBlock.init(json:))
+        } else if let childBlocks = json["children"]?.arrayValue {
+            children = childBlocks.map(CraftBlock.init(json:))
+        } else {
+            children = []
+        }
     }
 
     var displayText: String {
@@ -77,6 +83,10 @@ struct CraftBlock: Identifiable, Equatable {
             .map(\.displayText)
             .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
             .first { !$0.isEmpty } ?? "Empty daily note"
+    }
+
+    var shouldRenderAsCard: Bool {
+        type == "page" || type == "table" || textStyle == "page"
     }
 }
 

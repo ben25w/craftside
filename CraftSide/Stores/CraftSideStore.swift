@@ -18,6 +18,7 @@ final class CraftSideStore: ObservableObject {
     @Published var lastError: String?
     @Published var lastWriteDebug: JSONValue?
     @Published var activeTasks: JSONValue?
+    @Published var activeTaskSummaries: [CraftTaskSummary] = []
 
     private let client: CraftDailyNotesClient
     private let keychain: KeychainStore
@@ -27,7 +28,8 @@ final class CraftSideStore: ObservableObject {
         self.keychain = keychain
         connection = CraftConnection(
             endpoint: keychain.string(for: "CraftAPIEndpoint") ?? "",
-            apiKey: keychain.string(for: "CraftAPIKey") ?? ""
+            apiKey: keychain.string(for: "CraftAPIKey") ?? "",
+            mcpEndpoint: keychain.string(for: "CraftMCPURL") ?? ""
         )
         selectedDate = Date()
         notes = Self.makeInitialDateRange(around: Date())
@@ -50,11 +52,12 @@ final class CraftSideStore: ObservableObject {
         connection.isConfigured
     }
 
-    func saveConnection(endpoint: String, apiKey: String) async {
+    func saveConnection(endpoint: String, apiKey: String, mcpEndpoint: String) async {
         do {
             try keychain.set(endpoint, for: "CraftAPIEndpoint")
             try keychain.set(apiKey, for: "CraftAPIKey")
-            connection = CraftConnection(endpoint: endpoint, apiKey: apiKey)
+            try keychain.set(mcpEndpoint, for: "CraftMCPURL")
+            connection = CraftConnection(endpoint: endpoint, apiKey: apiKey, mcpEndpoint: mcpEndpoint)
             await refreshSelected()
         } catch {
             lastError = error.localizedDescription
@@ -64,11 +67,14 @@ final class CraftSideStore: ObservableObject {
     func disconnect() {
         keychain.delete(account: "CraftAPIEndpoint")
         keychain.delete(account: "CraftAPIKey")
-        connection = CraftConnection(endpoint: "", apiKey: "")
+        keychain.delete(account: "CraftMCPURL")
+        connection = CraftConnection(endpoint: "", apiKey: "", mcpEndpoint: "")
         notes = Self.makeInitialDateRange(around: Date())
         selectedBlockID = nil
         lastError = nil
         lastWriteDebug = nil
+        activeTasks = nil
+        activeTaskSummaries = []
     }
 
     func select(date: Date) async {
@@ -169,6 +175,23 @@ final class CraftSideStore: ObservableObject {
         isSaving = false
     }
 
+    func completeTask(id: String) async {
+        guard connection.usesMCP else {
+            lastError = "Task completion needs the Craft MCP connection."
+            return
+        }
+
+        isSaving = true
+        lastError = nil
+        do {
+            lastWriteDebug = try await client.completeTask(id: id, connection: connection)
+            await refreshSelected()
+        } catch {
+            lastError = error.localizedDescription
+        }
+        isSaving = false
+    }
+
     private func fetchIfNeeded(date: Date) async {
         guard let note = notes.first(where: { Calendar.current.isDate($0.date, inSameDayAs: date) }),
               note.loadState == .idle else { return }
@@ -188,9 +211,12 @@ final class CraftSideStore: ObservableObject {
 
     private func loadTasks() async {
         do {
-            activeTasks = try await client.fetchTasks(scope: "active", connection: connection)
+            let response = try await client.fetchTasks(scope: "active", connection: connection)
+            activeTasks = response
+            activeTaskSummaries = CraftTaskSummary.parse(from: response)
         } catch {
             activeTasks = nil
+            activeTaskSummaries = []
         }
     }
 

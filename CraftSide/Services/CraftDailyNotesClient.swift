@@ -3,9 +3,15 @@ import Foundation
 struct CraftConnection: Equatable {
     var endpoint: String
     var apiKey: String
+    var mcpEndpoint: String
 
     var isConfigured: Bool {
-        !endpoint.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        !endpoint.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
+        !mcpEndpoint.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+
+    var usesMCP: Bool {
+        !mcpEndpoint.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 }
 
@@ -17,6 +23,10 @@ final class CraftDailyNotesClient {
     }
 
     func fetchDailyNote(date: Date, connection: CraftConnection) async throws -> (CraftBlock?, JSONValue) {
+        if connection.usesMCP {
+            return try await fetchDailyNoteFromMCP(date: date, connection: connection)
+        }
+
         let data = try await request(
             path: "/blocks",
             query: [
@@ -53,6 +63,16 @@ final class CraftDailyNotesClient {
         siblingID: String?,
         connection: CraftConnection
     ) async throws -> JSONValue {
+        if connection.usesMCP {
+            return try await insertMarkdownWithMCP(
+                markdown,
+                date: date,
+                placement: placement,
+                siblingID: siblingID,
+                connection: connection
+            )
+        }
+
         let dateText = DateFormatter.craftDate.string(from: date)
         let position: [String: String]
 
@@ -90,6 +110,14 @@ final class CraftDailyNotesClient {
     }
 
     func updateBlockMarkdown(id: String, markdown: String, connection: CraftConnection) async throws -> JSONValue {
+        if connection.usesMCP {
+            return try await callMCPTool(
+                name: "craft_write",
+                command: "blocks update --id \(id) --markdown \(Self.quotedMCPArgument(markdown))",
+                connection: connection
+            )
+        }
+
         let payload: [String: Any] = [
             "blocks": [
                 [
@@ -111,6 +139,10 @@ final class CraftDailyNotesClient {
     }
 
     func fetchTasks(scope: String, connection: CraftConnection) async throws -> JSONValue {
+        if connection.usesMCP {
+            return try await callMCPTool(name: "craft_read", command: "tasks list --scope \(scope) --format json", connection: connection)
+        }
+
         let data = try await request(
             path: "/tasks",
             query: [URLQueryItem(name: "scope", value: scope)],
@@ -118,6 +150,13 @@ final class CraftDailyNotesClient {
             connection: connection
         )
         return try parseJSON(data)
+    }
+
+    func completeTask(id: String, connection: CraftConnection) async throws -> JSONValue {
+        if connection.usesMCP {
+            return try await callMCPTool(name: "craft_write", command: "tasks update --id \(id) --state done", connection: connection)
+        }
+        throw AppError.invalidResponse
     }
 
     private func request(
@@ -166,12 +205,107 @@ final class CraftDailyNotesClient {
         return data
     }
 
+    private func fetchDailyNoteFromMCP(date: Date, connection: CraftConnection) async throws -> (CraftBlock?, JSONValue) {
+        let dateText = DateFormatter.craftDate.string(from: date)
+        let response = try await callMCPTool(
+            name: "craft_read",
+            command: "blocks get --date \(dateText) --format json",
+            connection: connection
+        )
+
+        guard let text = response["result"]?["content"]?.arrayValue?.first?["text"]?.stringValue else {
+            return (nil, response)
+        }
+
+        let json = try parseJSON(Data(text.utf8))
+        let root = extractBlocks(from: json).first
+        return (root, json)
+    }
+
+    private func insertMarkdownWithMCP(
+        _ markdown: String,
+        date: Date,
+        placement: InsertPlacement,
+        siblingID: String?,
+        connection: CraftConnection
+    ) async throws -> JSONValue {
+        let quotedMarkdown = Self.quotedMCPArgument(markdown)
+        let command: String
+
+        switch placement {
+        case .start:
+            command = "blocks add --date \(DateFormatter.craftDate.string(from: date)) --markdown \(quotedMarkdown) --position start"
+        case .end:
+            command = "blocks add --date \(DateFormatter.craftDate.string(from: date)) --markdown \(quotedMarkdown) --position end"
+        case .before:
+            if let siblingID {
+                command = "blocks add --siblingId \(siblingID) --markdown \(quotedMarkdown) --position before"
+            } else {
+                command = "blocks add --date \(DateFormatter.craftDate.string(from: date)) --markdown \(quotedMarkdown) --position end"
+            }
+        case .after:
+            if let siblingID {
+                command = "blocks add --siblingId \(siblingID) --markdown \(quotedMarkdown) --position after"
+            } else {
+                command = "blocks add --date \(DateFormatter.craftDate.string(from: date)) --markdown \(quotedMarkdown) --position end"
+            }
+        }
+
+        return try await callMCPTool(name: "craft_write", command: command, connection: connection)
+    }
+
+    private func callMCPTool(name: String, command: String, connection: CraftConnection) async throws -> JSONValue {
+        guard let url = URL(string: connection.mcpEndpoint.trimmingCharacters(in: .whitespacesAndNewlines)) else {
+            throw AppError.invalidURL
+        }
+
+        let payload: [String: Any] = [
+            "jsonrpc": "2.0",
+            "id": Int.random(in: 10_000...99_999),
+            "method": "tools/call",
+            "params": [
+                "name": name,
+                "arguments": ["command": command]
+            ]
+        ]
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = try JSONSerialization.data(withJSONObject: payload, options: [])
+        request.setValue("application/json, text/event-stream", forHTTPHeaderField: "Accept")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        let (data, response) = try await session.data(for: request)
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw AppError.invalidResponse
+        }
+        guard (200..<300).contains(httpResponse.statusCode) else {
+            throw AppError.httpStatus(httpResponse.statusCode, String(data: data, encoding: .utf8) ?? "")
+        }
+
+        let text = String(data: data, encoding: .utf8) ?? ""
+        if text.hasPrefix("event:") || text.contains("\ndata:") {
+            let dataLines = text
+                .split(separator: "\n", omittingEmptySubsequences: false)
+                .compactMap { line -> String? in
+                    guard line.hasPrefix("data: ") else { return nil }
+                    return String(line.dropFirst(6))
+                }
+                .joined(separator: "\n")
+            return try parseJSON(Data(dataLines.utf8))
+        }
+        return try parseJSON(data)
+    }
+
     private func parseJSON(_ data: Data) throws -> JSONValue {
         let object = try JSONSerialization.jsonObject(with: data, options: [])
         return JSONValue(any: object)
     }
 
     private func extractBlocks(from json: JSONValue) -> [CraftBlock] {
+        if let data = json["data"]?.arrayValue {
+            return data.map(CraftBlock.init(json:))
+        }
         if let items = json["items"]?.arrayValue {
             return items.map(CraftBlock.init(json:))
         }
@@ -182,5 +316,13 @@ final class CraftDailyNotesClient {
             return [CraftBlock(json: json)]
         }
         return []
+    }
+
+    private static func quotedMCPArgument(_ value: String) -> String {
+        let escaped = value
+            .replacingOccurrences(of: "\\", with: "\\\\")
+            .replacingOccurrences(of: "\"", with: "\\\"")
+            .replacingOccurrences(of: "\n", with: "\\n")
+        return "\"\(escaped)\""
     }
 }

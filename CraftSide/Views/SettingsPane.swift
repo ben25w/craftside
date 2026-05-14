@@ -7,6 +7,7 @@ struct SettingsPane: View {
     @AppStorage("AppearanceMode") private var appearanceRaw = AppearanceMode.system.rawValue
     @State private var endpoint = ""
     @State private var apiKey = ""
+    @State private var mcpEndpoint = ""
 
     var body: some View {
         ScrollView {
@@ -16,12 +17,15 @@ struct SettingsPane: View {
 
                 GroupBox {
                     VStack(alignment: .leading, spacing: 10) {
-                        Text("Craft Daily Notes API")
+                        Text("Craft Connection")
                             .font(.headline)
-                        Text("Use a Daily Notes API URL from Craft’s Imagine tab. The value is stored in Keychain.")
+                        Text("Use the Daily Notes MCP URL for tasks and richer note actions. The older API URL can stay as fallback.")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                             .fixedSize(horizontal: false, vertical: true)
+
+                        TextField("MCP URL", text: $mcpEndpoint)
+                            .textFieldStyle(.roundedBorder)
 
                         TextField("API URL", text: $endpoint)
                             .textFieldStyle(.roundedBorder)
@@ -30,12 +34,12 @@ struct SettingsPane: View {
 
                         HStack {
                             Button {
-                                Task { await store.saveConnection(endpoint: endpoint, apiKey: apiKey) }
+                                Task { await store.saveConnection(endpoint: endpoint, apiKey: apiKey, mcpEndpoint: mcpEndpoint) }
                             } label: {
                                 Label("Save Connection", systemImage: "checkmark")
                             }
                             .buttonStyle(.borderedProminent)
-                            .disabled(endpoint.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                            .disabled(endpoint.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && mcpEndpoint.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
 
                             if store.hasConnection {
                                 Button(role: .destructive) {
@@ -106,6 +110,7 @@ struct SettingsPane: View {
         .onAppear {
             endpoint = store.connection.endpoint
             apiKey = store.connection.apiKey
+            mcpEndpoint = store.connection.mcpEndpoint
         }
     }
 
@@ -115,6 +120,7 @@ struct SettingsPane: View {
             set: {
                 sideRaw = $0.rawValue
                 CraftSidePanelController.shared.reposition(side: $0)
+                CraftEdgeTriggerController.shared.update(side: $0)
             }
         )
     }

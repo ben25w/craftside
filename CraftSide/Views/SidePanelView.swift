@@ -20,7 +20,7 @@ struct SidePanelView: View {
             }
         }
         .preferredColorScheme(appearance.colorScheme)
-        .background(CraftPalette.panelBackground)
+        .background(CraftPalette.canvas)
         .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
         .overlay(
             RoundedRectangle(cornerRadius: 18, style: .continuous)
@@ -74,7 +74,8 @@ private struct PanelHeader: View {
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 14)
-        .background(.ultraThinMaterial)
+        .foregroundStyle(.white)
+        .background(CraftPalette.headerBackground)
     }
 }
 
@@ -91,8 +92,19 @@ private struct MainDailyNotesView: View {
 }
 
 enum CraftPalette {
+    static let accent = Color(red: 0.62, green: 0.98, blue: 0.13)
     static let purple = Color(red: 0.48, green: 0.30, blue: 1.0)
-    static let purpleSoft = Color(red: 0.48, green: 0.30, blue: 1.0).opacity(0.14)
-    static let panelBackground = Color(nsColor: .windowBackgroundColor).opacity(0.96)
+    static let purpleSoft = Color(red: 0.48, green: 0.30, blue: 1.0).opacity(0.12)
+    static let canvas = Color(nsColor: .windowBackgroundColor).opacity(0.96)
+    static let card = Color(nsColor: .controlBackgroundColor).opacity(0.84)
+    static let taskPanel = Color.primary.opacity(0.045)
+    static let headerBackground = LinearGradient(
+        colors: [
+            Color(red: 0.08, green: 0.08, blue: 0.09),
+            Color(red: 0.17, green: 0.17, blue: 0.18)
+        ],
+        startPoint: .topLeading,
+        endPoint: .bottomTrailing
+    )
     static let border = Color.primary.opacity(0.08)
 }

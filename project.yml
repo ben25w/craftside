@@ -39,6 +39,7 @@ targets:
       - CraftSideTests
       - CraftSide/Models/JSONValue.swift
       - CraftSide/Models/CraftBlock.swift
+      - CraftSide/Models/CraftTaskSummary.swift
     settings:
       base:
         GENERATE_INFOPLIST_FILE: YES
