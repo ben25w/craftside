@@ -55,6 +55,26 @@ xcodebuild -project CraftSide.xcodeproj -scheme CraftSide -configuration Debug -
 
 The Codex Run action is wired to `./script/build_and_run.sh`.
 
+## Import Craft Tasks To Apple Reminders
+
+The standalone import script reads open Craft tasks and creates Apple Reminders in the default Reminders list. It does not change the CraftSide app or modify any Craft tasks.
+
+Preview first:
+
+```bash
+swift script/import_craft_tasks_to_reminders.swift --dry-run
+```
+
+Import:
+
+```bash
+swift script/import_craft_tasks_to_reminders.swift
+```
+
+The script imports `active`, `upcoming`, and `inbox` Craft tasks. It maps Craft schedule dates to Reminders due dates, falls back to deadline dates when no schedule is present, and does not add reminder notes. Re-running the import will add tasks again, including duplicates, by design.
+
+The Craft MCP URL is read from `CRAFT_MCP_URL` first, then from the CraftSide Keychain item saved by Settings.
+
 ## Craft Connection
 
 CraftSide v1 prefers the Craft Daily Notes MCP connection because it exposes task actions cleanly:
